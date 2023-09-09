@@ -2,8 +2,6 @@ version: "3.9"
 
 services:
   web:
-    # This prevents Prisma issues on M1 macs. Issue specifically around Node Alpine images.
-    platform: linux/amd64
     build:
       context: .
       dockerfile: ./Dockerfile
@@ -11,7 +9,7 @@ services:
       - .:/app/graphql-playground:delegated
     ports:
       - "${HTTP_PORT:-8000}:${HTTP_PORT:-8000}"
-    command: sh -c "npx prisma migrate dev && npm run start:dev"
+    command: npm start
     depends_on:
       - postgres
     environment:
