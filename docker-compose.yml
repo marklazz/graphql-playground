@@ -3,12 +3,14 @@ version: "3.9"
 services:
   web:
     build:
-      context: .
-      dockerfile: ./Dockerfile
+      context: ./react-graphql-github-vanilla
+      dockerfile: Dockerfile
     volumes:
-      - .:/app/graphql-playground:delegated
+      - ./react-graphql-github-vanilla:/app/graphql-playground:delegated
     ports:
       - "${HTTP_PORT:-8000}:${HTTP_PORT:-8000}"
+      - "3000:3000"
+      - "80:80"
     command: npm start
     depends_on:
       - postgres
