@@ -1,0 +1,1 @@
+See https://www.robinwieruch.de/minimal-node-js-babel-setup/#nodejs-with-nodemon
