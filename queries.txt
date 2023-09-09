@@ -1,0 +1,182 @@
+query { 
+	book: organization(login: "the-road-to-learn-react") {
+    name
+    url
+  }
+  emex: organization(login: "emex") {
+    name
+    url    
+  }
+}
+
+----
+query { 
+  book: organization(login: "the-road-to-learn-react") {
+  ...sharedOrganizationFields
+  }
+  company: organization(login: "facebook") {
+  ...sharedOrganizationFields
+  }
+}
+fragment sharedOrganizationFields on Organization {
+  name
+  url
+}
+--
+
+query ($organization: String!) {
+  organization(login: $organization) {
+  name
+  url
+  }
+}
+
+query variables:
+{
+"organization": "the-road-to-learn-react"
+}
+
+---- with params and defaults
+query ($organization: String = "the-road-to-learn-react") {
+  organization(login: $organization) {
+  name
+  url
+  }
+}
+
+--- named queries
+query OrganizationForLearningReact {
+  organization(login: "the-road-to-learn-react") {
+  name
+  url
+  }
+}
+
+--- param query with nested objects
+query OrganizationForLearningReact(
+$organization: String!,
+$repository: String!
+) {
+  organization(login: $organization) {
+    name
+    url
+    repository(name: $repository) {
+      name
+    }
+  }
+}
+
+vars: {
+ "organization": "the-road-to-learn-react",
+ "repository": "the-road-to-learn-react-chinese"
+}
+
+-- queries with conditionals
+query OrganizationForLearningReact(
+$organization: String!,
+$repository: String!,
+$withFork: Boolean!
+) {
+  organization(login: $organization) {
+    name
+    url
+    repository(name: $repository) {
+      name
+      forkCount @include(if: $withFork)
+    }
+  }
+}
+
+vars: 
+{
+ "organization": "the-road-to-learn-react",
+ "repository": "the-road-to-learn-react-chinese",
+  "withFork": true
+}
+
+-- mutation
+mutation AddStar($repositoryId: ID!) {
+  addStar(input: { starrableId: $repositoryId }) {
+    starrable {
+    id
+    viewerHasStarred
+    }
+  }
+}
+
+-- pagination with cursor
+query OrganizationForLearningReact {
+organization(login: "the-road-to-learn-react") {
+  name
+  url
+  repositories(first: 2) {
+    edges {
+      node {
+        name
+      }
+      cursor
+      }
+    }
+  }
+}
+
+=> {
+  "data": {
+    "organization": {
+      "name": "The Road to React",
+      "url": "https://github.com/the-road-to-learn-react",
+      "repositories": {
+        "edges": [
+          {
+            "node": {
+              "name": "the-road-to-learn-react"
+            },
+            "cursor": "Y3Vyc29yOnYyOpHOA8awSw=="
+          },
+          {
+            "node": {
+              "name": "hackernews-client"
+            },
+            "cursor": "Y3Vyc29yOnYyOpHOBGhimw=="
+          }
+        ]
+      }
+    }
+  }
+}
+
+-- pagination using cursor
+query OrganizationForLearningReact {
+organization(login: "the-road-to-learn-react") {
+name
+url
+repositories(first: 2, after: "Y3Vyc29yOnYyOpHOA8awSw==") {
+edges {
+node {
+name
+}
+cursor
+}
+}
+}
+}
+
+- pagination with more information
+query OrganizationForLearningReact {
+organization(login: "the-road-to-learn-react") {
+  name
+  url
+  repositories(first: 2, after: "Y3Vyc29yOnYyOpHOA8awSw==") {
+      totalCount
+      edges {
+        node {
+          name
+        }
+      }
+      pageInfo {
+        endCursor
+        hasNextPage
+      }
+    }
+  }
+}
