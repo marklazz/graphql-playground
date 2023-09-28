@@ -13,7 +13,6 @@ ADD . $APP_HOME
 # where available (npm@5+)
 # COPY . . 
 
-RUN ls
 RUN npm install
 # If you are building your code for production
 # RUN npm ci --omit=dev
