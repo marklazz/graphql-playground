@@ -1,6 +1,17 @@
 version: "3.9"
 
 services:
+  minimal:
+    build:
+      context: ./minimal-node-application
+      dockerfile: Dockerfile
+    volumes:
+      - ./minimal-node-application:/app/minimal-node-application:delegated
+    ports:
+      - "${HTTP_PORT:-8001}:${HTTP_PORT:-8000}"
+      - "4000:3000"
+      - "81:80"
+    command: npm start
   web:
     build:
       context: ./react-graphql-github-vanilla
@@ -24,7 +35,6 @@ services:
       POSTGRES_PASSWORD: postgres
     ports:
       - "5432:5432"
-
   redis:
     image: redis:latest
     ports:
