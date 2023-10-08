@@ -32,6 +32,16 @@ const GET_REPOSITORIES_OF_ORGANIZATION = gql`
     }
   }
 `;
+const ADD_STAR = gql`
+mutation AddStar($repositoryId: ID!) {
+  addStar(input: { starrableId: $repositoryId }) {
+    starrable {
+      id
+      viewerHasStarred
+    }
+  }
+}
+`;
 
 const TOKEN = process.env.REACT_APP_GITHUB_PERSONAL_ACCESS_TOKEN;
 console.log("TOKEN:");
@@ -62,6 +72,15 @@ client
 query: GET_REPOSITORIES_OF_ORGANIZATION,
 variables: {
 organization: 'the-road-to-learn-react',
+},
+})
+.then(console.log);
+
+client
+.mutate({
+mutation: ADD_STAR,
+variables: {
+repositoryId: 'MDEwOlJlcG9zaXRvcnk2MzM1MjkwNw==',
 },
 })
 .then(console.log);
