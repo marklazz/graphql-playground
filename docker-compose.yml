@@ -1,5 +1,17 @@
 version: "3.9"
 services:
+  apollo:
+    image: apollo-app
+    build:
+      context: ./react-graphql-github-apollo-starter-kit
+      dockerfile: Dockerfile
+    volumes:
+      - ./react-graphql-github-apollo-starter-kit:/app/react-graphql-github-apollo-starter-kit:delegated
+    ports:
+      - "${HTTP_PORT:-8001}:${HTTP_PORT:-8000}"
+      - "4001:3000"
+      - "82:80"
+    command: npm start
   minimal:
     image: minimal-node-app
     build:
