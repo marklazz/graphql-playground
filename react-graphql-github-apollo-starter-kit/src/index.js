@@ -5,9 +5,9 @@ import { HttpLink } from 'apollo-link-http';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { ApolloProvider } from 'react-apollo';
 import 'dotenv/config';
-import registerServiceWorker from './registerServiceWorker';
 import App from './App';
 import './style.css';
+// import registerServiceWorker from './registerServiceWorker';
 
 const TOKEN = process.env.REACT_APP_GITHUB_PERSONAL_ACCESS_TOKEN;
 const GITHUB_BASE_URL = 'https://api.github.com/graphql';
@@ -30,4 +30,4 @@ ReactDOM.render(
   document.getElementById('root')
 );
 
-registerServiceWorker();
+// registerServiceWorker();

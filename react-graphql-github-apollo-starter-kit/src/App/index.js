@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import Profile from '../Profile';
-import 'dotenv/config';
 
 class App extends Component {
   render() {
