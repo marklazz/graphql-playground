@@ -7,6 +7,8 @@ import { ApolloProvider } from 'react-apollo';
 import 'dotenv/config';
 import App from './App';
 import './style.css';
+import { onError } from 'apollo-link-error';
+import { ApolloLink } from 'apollo-link';
 // import registerServiceWorker from './registerServiceWorker';
 
 const TOKEN = process.env.REACT_APP_GITHUB_PERSONAL_ACCESS_TOKEN;
@@ -18,10 +20,23 @@ const httpLink = new HttpLink({
   },
 });
 const cache = new InMemoryCache();
+const errorLink = onError(({ graphQLErrors, networkError }) => {
+  if (graphQLErrors) {
+    console.log('sos bien trolo');
+    // do something with graphql error
+  }
+  if (networkError) {
+    console.log('network trolaza bien trolo');
+    // do something with network error
+  }
+});
+const link = ApolloLink.from([errorLink, httpLink]);
+  // link: httpLink,
 const client = new ApolloClient({
-  link: httpLink,
+  link: link,
   cache,
 });
+
 
 ReactDOM.render(
   <ApolloProvider client={client}>
