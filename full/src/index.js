@@ -17,6 +17,17 @@ let users = {
     lastname: 'Davids'
   },
 };
+let messages = {
+  1: {
+    id: '1',
+    text: 'Hello World',
+  },
+  2: {
+    id: '2',
+    text: 'By World',
+  },
+};
+
 const me = users[1];
 
 const schema = gql`
@@ -24,11 +35,20 @@ const schema = gql`
     users: [User!]
     user(id: ID!): User
     me: User
+
+    messages: [Message!]!
+    message(id: ID!): Message!
   }
 
   type User {
     id: ID!
     username: String!
+  }
+
+  type Message {
+  id: ID!
+  text: String!
+  user: User!
   }
 `;
 
@@ -56,10 +76,22 @@ const resolvers = {
     users: () => {
       return Object.values(users);
     },
+    messages: () => {
+      return Object.values(messages);
+    },
+    message: (parent, { id }) => {
+      return messages[id];
+    },
   },
 
   User: {
     username: user => `${user.firstname} ${user.lastname}`,
+  },
+
+  Message: {
+    user: (parent, args, { me }) => {
+      return me;
+    },
   },
 };
 
