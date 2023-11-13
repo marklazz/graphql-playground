@@ -5,21 +5,54 @@ import cors from 'cors';
 const app = express();
 app.use(cors());
 
+let users = {
+  1: {
+    id: '1',
+    username: 'Robin Wieruch',
+  },
+  2: {
+    id: '2',
+    username: 'Dave Davids',
+  },
+};
+const me = users[1];
+
 const schema = gql`
-type Query {
-me: User
-}
-type User {
-username: String!
-}
+  type Query {
+    users: [User!]
+    user(id: ID!): User
+    me: User
+  }
+
+  type User {
+    id: ID!
+    username: String!
+  }
 `;
 
+// Sample query
+// {
+//  user(id: "2") {
+    // username
+  // }
+  // me {
+    // id
+    // username
+  // }
+  // users {
+    // username
+  // }
+// }
 const resolvers = {
   Query: {
+    user: (parent, { id }) => {
+      return users[id];
+    },
     me: () => {
-      return {
-        username: 'Robin Wieruch',
-      };
+      return me;
+    },
+    users: () => {
+      return Object.values(users);
     },
   },
 };
