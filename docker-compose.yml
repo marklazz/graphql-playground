@@ -1,5 +1,15 @@
 version: "3.9"
 services:
+  full:
+    image: apollo-full
+    build:
+      context: ./full
+      dockerfile: Dockerfile
+    volumes:
+      - ./full:/app/full:delegated
+    ports:
+      - "8000:8000"
+    command: npm start
   apollo:
     image: apollo-app
     build:
@@ -19,6 +29,18 @@ services:
       dockerfile: Dockerfile
     volumes:
       - ./minimal-node-application:/app/minimal-node-application:delegated
+    ports:
+      - "${HTTP_PORT:-8001}:${HTTP_PORT:-8000}"
+      - "4000:3000"
+      - "81:80"
+    command: npm start
+  node-server:
+    image: nodejs-graphql-and-apollo-server
+    build:
+      context: ./nodejs-graphql-and-apollo-server
+      dockerfile: Dockerfile
+    volumes:
+      - ./nodejs-graphql-and-apollo-server:/app/nodejs-graphql-and-apollo-server:delegated
     ports:
       - "${HTTP_PORT:-8001}:${HTTP_PORT:-8000}"
       - "4000:3000"
@@ -54,3 +76,4 @@ services:
 
 volumes:
   pgdata:
+  full:
