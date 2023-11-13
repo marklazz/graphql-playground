@@ -8,11 +8,13 @@ app.use(cors());
 let users = {
   1: {
     id: '1',
-    username: 'Robin Wieruch',
+    firstname: 'Robin',
+    lastname: 'Wieruch'
   },
   2: {
     id: '2',
-    username: 'Dave Davids',
+    firstname: 'Dave',
+    lastname: 'Davids'
   },
 };
 const me = users[1];
@@ -48,18 +50,25 @@ const resolvers = {
     user: (parent, { id }) => {
       return users[id];
     },
-    me: () => {
+    me: (parent, args, { me }) => {
       return me;
     },
     users: () => {
       return Object.values(users);
     },
   },
+
+  User: {
+    username: user => `${user.firstname} ${user.lastname}`,
+  },
 };
 
 const server = new ApolloServer({
   typeDefs: schema,
   resolvers,
+  context: {
+    me: users[1],
+  },
 });
 
 // More required logic for integrating with Express
