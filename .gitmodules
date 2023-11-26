@@ -1,0 +1,3 @@
+[submodule "fullstack-apollo-express-postgresql-boilerplate"]
+	path = fullstack-apollo-express-postgresql-boilerplate
+	url = https://github.com/the-road-to-graphql/fullstack-apollo-express-postgresql-boilerplate.git
