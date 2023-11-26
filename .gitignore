@@ -2,3 +2,4 @@ node_modules/*
 tags
 react-graphql-github-vanilla/.env
 react-graphql-github-apollo-starter-kit/.env
+full/node_modules/*
